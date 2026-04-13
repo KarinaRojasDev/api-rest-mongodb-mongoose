@@ -1,24 +1,38 @@
-const express = require("express"); //Importamos express
-const app = express(); //Hacemos que funcione para que se ejecute
-const connectDB = require("./config/db_mongo");
-
 require("dotenv").config();
 
-const PORT = 3000; //Necesitamos un puerto
-app.use(express.json()); //Parsea los datos que vengan del body(Colocarlo siempre)
+//Importamos express
+const express = require("express"); 
+const app = express(); 
+const morgan = require("morgan");
+const connectDB = require("./config/db_mongo");
+const PORT = 3000; 
+
+
+//IMPORTAMOS RUTAS
+const routesProvider = require("./routes/providers.routes");
+
+
+//Parsea los datos que vengan del body(Colocarlo siempre)
+app.use(express.json());
+app.use(morgan("dev"));
 
 app.get("/", (req, res) => {
-  //Es un endpoint
   res.send("funciona");
 });
+
+
+//Accedemos a las rutas de libros y autores
+app.use("/api/providers", routesProvider); 
+
 
 app.use((req, res) => {
   res.status(404).json({
     error: "la pagina no existe",
   });
-}); //Para que cuando la url no exista me de un mensaje. Se pone abajo porque lo lee por orden
+}); 
 
-connectDB(); //Con esto conectamos a MongoDB
+//Con esto conectamos a MongoDB
+connectDB(); 
 
 app.listen(PORT, () =>
   console.log(`El servidor esta escuchando en http:localhost:${PORT}`),
