@@ -4,7 +4,7 @@ const Provider = require("../models/Providers");
 const getProviders = async (req, res) => {
     try {
         const providers = await Provider.find();
-        res.json(providers);
+        res.status(200).json(providers);
     } catch (err) {
       console.log(err);
     }
@@ -31,7 +31,12 @@ const getProviderId = async (req, res) => {
 const createProvider = async(req, res) => {
     try {
         const provider = await Provider.create(req.body);
-        res.status(201).json(provider);
+        const savedProvider = await provider.save();
+
+        res.status(201).json({
+          message: "proveedor creado",
+          provider: savedProvider,
+        });
 
     } catch (err) {
       console.log(err);

@@ -5,12 +5,12 @@ const express = require("express");
 const app = express(); 
 const morgan = require("morgan");
 const connectDB = require("./config/db_mongo");
-const PORT = 3000; 
+const PORT = process.env.PORT || 3000; 
 
 
 //IMPORTAMOS RUTAS
 const routesProvider = require("./routes/providers.routes");
-
+const productsRoutes = require("./routes/products.routes");
 
 //Parsea los datos que vengan del body(Colocarlo siempre)
 app.use(express.json());
@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
 
 //Accedemos a las rutas de libros y autores
 app.use("/api/providers", routesProvider); 
-
+app.use("/api/products", productsRoutes);
 
 app.use((req, res) => {
   res.status(404).json({

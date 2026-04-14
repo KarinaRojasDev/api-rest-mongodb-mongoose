@@ -32,4 +32,5 @@ const providerSchema = new mongoose.Schema(
   },
 );
 
-module.exports = mongoose.model("Provider", providerSchema);
+const Provider = mongoose.model("Provider", providerSchema);
+module.exports = Provider;
